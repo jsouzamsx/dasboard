@@ -4,330 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Financeiro</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100">
-    <header class="bg-white shadow-md">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                <h1 class="text-xl font-bold">Planilha Financeira</h1>
-            </div>
-            <div class="flex items-center">
-                <div class="hidden md:flex flex-col items-end text-sm mr-4">
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <span id="current-date">01/04/2025</span>
-                    </div>
-                    <div class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span id="current-time">12:00:00</span>
-                    </div>
-                </div>
-                <div class="flex space-x-2">
-                    <button id="export-data" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
-                        Exportar
-                    </button>
-                    <button id="import-data" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm">
-                        Importar
-                    </button>
-                </div>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-bar-chart-fill me-2"></i>
+                Dashboard Financeiro
+            </a>
+            <div class="d-flex align-items-center">
+                <span id="current-date-time" class="text-white me-3"></span>
+                <button id="export-btn" class="btn btn-outline-light btn-sm me-2">Exportar</button>
+                <button id="import-btn" class="btn btn-outline-light btn-sm">Importar</button>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="container mx-auto px-4 py-6">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-            <h2 class="text-2xl font-bold mb-4 md:mb-0">Controle Financeiro</h2>
-            <div class="flex space-x-2">
-                <button id="add-income" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Entrada
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Controle Financeiro</h2>
+            <div>
+                <button id="add-income-btn" class="btn btn-success me-2">
+                    <i class="bi bi-plus-circle"></i> Entrada
                 </button>
-                <button id="add-expense" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                    </svg>
-                    Saída
+                <button id="add-expense-btn" class="btn btn-danger">
+                    <i class="bi bi-dash-circle"></i> Saída
                 </button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Resumos -->
+        <div class="row mb-4">
             <!-- Resumo Financeiro -->
-            <div class="bg-white rounded-lg shadow-md p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold">Resumo Financeiro</h3>
-                    <button id="edit-summary" class="text-gray-500 hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <p class="text-sm text-gray-500">Entrada</p>
-                        <div class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                            </svg>
-                            <span id="total-income" class="text-xl font-bold">R$ 0,00</span>
-                        </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Resumo Financeiro</h5>
+                        <button id="edit-summary-btn" class="btn btn-sm btn-link">
+                            <i class="bi bi-pencil"></i>
+                        </button>
                     </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Saída</p>
-                        <div class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-500 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                            </svg>
-                            <span id="total-expense" class="text-xl font-bold">R$ 0,00</span>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <p class="text-muted mb-1">Entrada</p>
+                                <h4 id="total-income" class="text-success">R$ 0,00</h4>
+                            </div>
+                            <div class="col-6">
+                                <p class="text-muted mb-1">Saída</p>
+                                <h4 id="total-expense" class="text-danger">R$ 0,00</h4>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="bg-gray-100 p-3 rounded-lg">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="text-sm text-gray-500">Saldo Final</p>
-                            <p id="final-balance" class="text-lg font-bold">R$ 0,00</p>
-                        </div>
-                        <div class="text-right">
-                            <p id="balance-status" class="text-sm text-gray-500">Saldo Neutro</p>
-                            <p id="balance-amount" class="text-base font-semibold text-gray-700">R$ 0,00</p>
+                        <div class="bg-light p-3 rounded">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="text-muted mb-1">Saldo Final</p>
+                                    <h4 id="final-balance">R$ 0,00</h4>
+                                </div>
+                                <div class="text-end">
+                                    <p id="balance-status" class="text-muted mb-1">Saldo Neutro</p>
+                                    <h5 id="balance-amount">R$ 0,00</h5>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- Resumo de Holerite -->
-            <div class="bg-white rounded-lg shadow-md p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold">Resumo de Holerite</h3>
-                    <div class="flex space-x-2">
-                        <button id="import-payroll" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                            </svg>
-                        </button>
-                        <button id="edit-payroll" class="text-gray-500 hover:text-gray-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                            </svg>
-                        </button>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Resumo de Holerite</h5>
+                        <div>
+                            <button id="import-payroll-btn" class="btn btn-sm btn-link me-2">
+                                <i class="bi bi-upload"></i>
+                            </button>
+                            <button id="edit-payroll-btn" class="btn btn-sm btn-link">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <p class="text-muted mb-1">Total Recebido</p>
+                                <h5 id="payroll-income">R$ 0,00</h5>
+                            </div>
+                            <div class="col-4">
+                                <p class="text-muted mb-1">Total Desconto</p>
+                                <h5 id="payroll-deduction" class="text-danger">R$ 0,00</h5>
+                            </div>
+                            <div class="col-4">
+                                <p class="text-muted mb-1">A Receber</p>
+                                <h5 id="payroll-net" class="text-success">R$ 0,00</h5>
+                            </div>
+                        </div>
+                        <div id="payroll-items" class="overflow-auto" style="max-height: 150px;">
+                            <p class="text-muted text-center">Nenhum item de holerite adicionado</p>
+                        </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-3 gap-4 mb-4">
-                    <div>
-                        <p class="text-sm text-gray-500">Total Recebido</p>
-                        <p id="payroll-income" class="text-lg font-bold">R$ 0,00</p>
+            </div>
+        </div>
+
+        <!-- Filtros de Transação -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="mb-3">Filtros</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="search-input" class="form-control" placeholder="Buscar...">
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Total de Desconto</p>
-                        <p id="payroll-deduction" class="text-lg font-bold text-red-500">R$ 0,00</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Pagamento a Receber</p>
-                        <p id="payroll-net" class="text-lg font-bold text-green-500">R$ 0,00</p>
-                    </div>
-                </div>
-                <div id="payroll-items" class="space-y-2 max-h-40 overflow-y-auto">
-                    <!-- Itens do holerite serão adicionados aqui dinamicamente -->
-                    <p class="text-sm text-gray-500 text-center">Nenhum item de holerite adicionado</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <!-- Gráfico de Despesas -->
-            <div class="bg-white rounded-lg shadow-md p-4 md:col-span-2">
-                <h3 class="text-lg font-semibold mb-4">Análise Financeira</h3>
-                <div class="h-64">
-                    <canvas id="expense-chart"></canvas>
-                </div>
-            </div>
-
-            <!-- Metas Financeiras -->
-            <div class="bg-white rounded-lg shadow-md p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-lg font-semibold">Metas Financeiras</h3>
-                    <button id="add-goal" class="text-gray-500 hover:text-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                    </button>
-                </div>
-                <div id="financial-goals" class="space-y-4 max-h-56 overflow-y-auto">
-                    <!-- Metas financeiras serão adicionadas aqui dinamicamente -->
-                    <p class="text-sm text-gray-500 text-center">Nenhuma meta financeira adicionada</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tabela de Transações -->
-        <div class="bg-white rounded-lg shadow-md p-4">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold">Transações Recentes</h3>
-                <div class="flex items-center">
-                    <div class="relative mr-2">
-                        <input id="transaction-search" type="text" placeholder="Buscar..." class="border rounded-md px-3 py-1 text-sm w-40 pl-8">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 absolute left-2 top-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </div>
-                    <select id="transaction-filter" class="border rounded-md px-2 py-1 text-sm">
-                        <option value="all">Todos</option>
-                        <option value="Entrada">Entradas</option>
-                        <option value="Saída">Saídas</option>
-                    </select>
-                </div>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="min-w-full">
-                    <thead>
-                        <tr class="bg-gray-100">
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Data</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Tipo</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Descrição</th>
-                            <th class="px-4 py-2 text-right text-sm font-medium text-gray-600">Valor</th>
-                            <th class="px-4 py-2 text-right text-sm font-medium text-gray-600">Categoria</th>
-                            <th class="px-4 py-2 text-right text-sm font-medium text-gray-600">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactions-table">
-                        <!-- Transações serão adicionadas aqui dinamicamente -->
-                        <tr>
-                            <td colspan="6" class="px-4 py-4 text-center text-gray-500">Nenhuma transação encontrada</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="flex justify-between items-center mt-4">
-                <div class="text-sm text-gray-500">
-                    Mostrando <span id="showing-transactions">0</span> de <span id="total-transactions">0</span> transações
-                </div>
-                <div class="flex space-x-2">
-                    <button id="prev-page" class="px-2 py-1 border rounded-md text-sm disabled:opacity-50">Anterior</button>
-                    <button id="next-page" class="px-2 py-1 border rounded-md text-sm disabled:opacity-50">Próximo</button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Modal de Adicionar Transação -->
-    <div id="transaction-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="transaction-modal-title" class="text-lg font-semibold">Adicionar Transação</h3>
-                <button class="close-modal text-gray-500 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <form id="transaction-form">
-                <input type="hidden" id="transaction-id">
-                <input type="hidden" id="transaction-type" value="Entrada">
-                <div class="mb-4">
-                    <label for="transaction-date" class="block text-sm font-medium text-gray-700 mb-1">Data</label>
-                    <input type="date" id="transaction-date" class="w-full border rounded-md px-3 py-2" required>
-                </div>
-                <div class="mb-4">
-                    <label for="transaction-description" class="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
-                    <input type="text" id="transaction-description" class="w-full border rounded-md px-3 py-2" required>
-                </div>
-                <div class="mb-4">
-                    <label for="transaction-amount" class="block text-sm font-medium text-gray-700 mb-1">Valor (R$)</label>
-                    <input type="number" id="transaction-amount" step="0.01" min="0" class="w-full border rounded-md px-3 py-2" required>
-                </div>
-                <div class="mb-4">
-                    <label for="transaction-category" class="block text-sm font-medium text-gray-700 mb-1">Categoria</label>
-                    <select id="transaction-category" class="w-full border rounded-md px-3 py-2" required>
-                        <!-- Categorias serão adicionadas dinamicamente -->
-                    </select>
-                </div>
-                <div class="flex justify-end space-x-2">
-                    <button type="button" class="close-modal px-4 py-2 border rounded-md text-sm">Cancelar</button>
-                    <button type="submit" id="save-transaction" class="px-4 py-2 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de Importar Holerite -->
-    <div id="payroll-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold">Importar Holerite</h3>
-                <button class="close-modal text-gray-500 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <form id="payroll-form">
-                <div class="mb-4">
-                    <label for="payroll-text" class="block text-sm font-medium text-gray-700 mb-1">Dados do Holerite</label>
-                    <textarea id="payroll-text" rows="10" class="w-full border rounded-md px-3 py-2" placeholder="Cole os dados do holerite aqui..."></textarea>
-                </div>
-                <div class="flex justify-end space-x-2">
-                    <button type="button" class="close-modal px-4 py-2 border rounded-md text-sm">Cancelar</button>
-                    <button type="submit" id="import-payroll-btn" class="px-4 py-2 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">Importar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de Adicionar Meta -->
-    <div id="goal-modal" class="modal fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
-        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="goal-modal-title" class="text-lg font-semibold">Adicionar Meta</h3>
-                <button class="close-modal text-gray-500 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <form id="goal-form">
-                <input type="hidden" id="goal-id">
-                <div class="mb-4">
-                    <label for="goal-name" class="block text-sm font-medium text-gray-700 mb-1">Nome da Meta</label>
-                    <input type="text" id="goal-name" class="w-full border rounded-md px-3 py-2" required>
-                </div>
-                <div class="mb-4">
-                    <label for="goal-target" class="block text-sm font-medium text-gray-700 mb-1">Valor Alvo (R$)</label>
-                    <input type="number" id="goal-target" step="0.01" min="0" class="w-full border rounded-md px-3 py-2" required>
-                </div>
-                <div class="mb-4">
-                    <label for="goal-current" class="block text-sm font-medium text-gray-700 mb-1">Valor Atual (R$)</label>
-                    <input type="number" id="goal-current" step="0.01" min="0" class="w-full border rounded-md px-3 py-2" required>
-                </div>
-                <div class="mb-4">
-                    <label for="goal-date" class="block text-sm font-medium text-gray-700 mb-1">Data Limite</label>
-                    <input type="date" id="goal-date" class="w-full border rounded-md px-3 py-2" required>
-                </div>
-                <div class="flex justify-end space-x-2">
-                    <button type="button" class="close-modal px-4 py-2 border rounded-md text-sm">Cancelar</button>
-                    <button type="submit" id="save-goal" class="px-4 py-2 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script src="assets/js/storage.js"></script>
-    <script src="assets/js/dashboard.js"></script>
-    <script src="assets/js/transactions.js"></script>
-    <script src="assets/js/payroll.js"></script>
-    <script src="assets/js/charts.js"></script>
-    <script src="assets/js/app.js"></script>
-</body>
-</html>
+                    <div class="col-md-3">
+                        <select id="type-filter" class="form-select">
+                            <option value="all">Todos os tipos</option>
+                            <option value="Entrada">Entradas</option>
+                            <option value="Saída">Saídas</option>
+                        </select>
+               

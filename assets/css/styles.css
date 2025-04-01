@@ -1,68 +1,73 @@
 /* Estilos gerais */
-.modal {
-    z-index: 50;
+body {
+    background-color: #f8f9fa;
 }
 
-/* Estilos para tabelas */
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th, td {
-    padding: 8px 12px;
-}
-
-tbody tr:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.02);
-}
-
-/* Estilos para barras de progresso */
-.progress-bar {
-    height: 8px;
-    border-radius: 4px;
-    background-color: #e5e7eb;
-    overflow: hidden;
-}
-
-.progress-bar-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 0.3s ease;
-}
-
-/* Cores para tipos de transação */
+/* Badges para tipos de transação */
 .badge-entrada {
-    background-color: #d1fae5;
-    color: #065f46;
+    background-color: #d1e7dd;
+    color: #0f5132;
 }
 
 .badge-saida {
-    background-color: #fee2e2;
-    color: #b91c1c;
+    background-color: #f8d7da;
+    color: #842029;
+}
+
+/* Barra de progresso para metas */
+.progress {
+    height: 8px;
+}
+
+/* Tabela de transações */
+.table th, .table td {
+    vertical-align: middle;
 }
 
 /* Animações */
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-.fade-in {
-    animation: fadeIn 0.3s ease-in-out;
+/* Filtros ativos */
+.filter-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #212529;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+}
+
+.filter-badge .close-btn {
+    margin-left: 5px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.filter-badge .close-btn:hover {
+    opacity: 1;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .container {
-        padding-left: 1rem;
-        padding-right: 1rem;
+    .card-header {
+        padding: 0.75rem;
     }
     
-    .overflow-x-auto {
-        margin-left: -1rem;
-        margin-right: -1rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .table-responsive {
+        margin: 0 -1rem;
     }
 }
