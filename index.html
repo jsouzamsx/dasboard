@@ -4,127 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Financeiro</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="bi bi-bar-chart-fill me-2"></i>
-                Dashboard Financeiro
-            </a>
-            <div class="d-flex align-items-center">
-                <span id="current-date-time" class="text-white me-3"></span>
-                <button id="export-btn" class="btn btn-outline-light btn-sm me-2">Exportar</button>
-                <button id="import-btn" class="btn btn-outline-light btn-sm">Importar</button>
-            </div>
-        </div>
-    </nav>
+    <header>
+        <h1>Dashboard Financeiro</h1>
+        <div id="data-hora"></div>
+    </header>
 
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Controle Financeiro</h2>
-            <div>
-                <button id="add-income-btn" class="btn btn-success me-2">
-                    <i class="bi bi-plus-circle"></i> Entrada
-                </button>
-                <button id="add-expense-btn" class="btn btn-danger">
-                    <i class="bi bi-dash-circle"></i> Saída
-                </button>
-            </div>
-        </div>
-
-        <!-- Resumos -->
-        <div class="row mb-4">
-            <!-- Resumo Financeiro -->
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Resumo Financeiro</h5>
-                        <button id="edit-summary-btn" class="btn btn-sm btn-link">
-                            <i class="bi bi-pencil"></i>
-                        </button>
+    <main>
+        <section class="resumo-container">
+            <div class="card">
+                <h2>Resumo Financeiro <button id="editar-resumo" class="btn-editar">Editar</button></h2>
+                <div class="resumo-grid">
+                    <div>
+                        <p>Entradas:</p>
+                        <h3 id="total-entradas" class="valor-positivo">R$ 0,00</h3>
                     </div>
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col-6">
-                                <p class="text-muted mb-1">Entrada</p>
-                                <h4 id="total-income" class="text-success">R$ 0,00</h4>
-                            </div>
-                            <div class="col-6">
-                                <p class="text-muted mb-1">Saída</p>
-                                <h4 id="total-expense" class="text-danger">R$ 0,00</h4>
-                            </div>
-                        </div>
-                        <div class="bg-light p-3 rounded">
-                            <div class="d-flex justify-content-between">
-                                <div>
-                                    <p class="text-muted mb-1">Saldo Final</p>
-                                    <h4 id="final-balance">R$ 0,00</h4>
-                                </div>
-                                <div class="text-end">
-                                    <p id="balance-status" class="text-muted mb-1">Saldo Neutro</p>
-                                    <h5 id="balance-amount">R$ 0,00</h5>
-                                </div>
-                            </div>
-                        </div>
+                    <div>
+                        <p>Saídas:</p>
+                        <h3 id="total-saidas" class="valor-negativo">R$ 0,00</h3>
+                    </div>
+                    <div>
+                        <p>Saldo:</p>
+                        <h3 id="saldo-total">R$ 0,00</h3>
                     </div>
                 </div>
             </div>
 
-            <!-- Resumo de Holerite -->
-            <div class="col-md-6">
-                <div class="card h-100">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Resumo de Holerite</h5>
-                        <div>
-                            <button id="import-payroll-btn" class="btn btn-sm btn-link me-2">
-                                <i class="bi bi-upload"></i>
-                            </button>
-                            <button id="edit-payroll-btn" class="btn btn-sm btn-link">
-                                <i class="bi bi-pencil"></i>
-                            </button>
-                        </div>
+            <div class="card">
+                <h2>Holerite <button id="editar-holerite" class="btn-editar">Editar</button></h2>
+                <div class="resumo-grid">
+                    <div>
+                        <p>Recebido:</p>
+                        <h3 id="holerite-recebido" class="valor-positivo">R$ 0,00</h3>
                     </div>
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col-4">
-                                <p class="text-muted mb-1">Total Recebido</p>
-                                <h5 id="payroll-income">R$ 0,00</h5>
-                            </div>
-                            <div class="col-4">
-                                <p class="text-muted mb-1">Total Desconto</p>
-                                <h5 id="payroll-deduction" class="text-danger">R$ 0,00</h5>
-                            </div>
-                            <div class="col-4">
-                                <p class="text-muted mb-1">A Receber</p>
-                                <h5 id="payroll-net" class="text-success">R$ 0,00</h5>
-                            </div>
-                        </div>
-                        <div id="payroll-items" class="overflow-auto" style="max-height: 150px;">
-                            <p class="text-muted text-center">Nenhum item de holerite adicionado</p>
-                        </div>
+                    <div>
+                        <p>Descontos:</p>
+                        <h3 id="holerite-descontos" class="valor-negativo">R$ 0,00</h3>
+                    </div>
+                    <div>
+                        <p>Líquido:</p>
+                        <h3 id="holerite-liquido">R$ 0,00</h3>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Filtros de Transação -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="mb-3">Filtros</h5>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" id="search-input" class="form-control" placeholder="Buscar...">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <select id="type-filter" class="form-select">
-                            <option value="all">Todos os tipos</option>
-                            <option value="Entrada">Entradas</option>
-                            <option value="Saída">Saídas</option>
-                        </select>
-               
+                <div id="holerite-itens" class="holerite-itens">
+                    <p class="mensagem-vazia">Nenhum item de holerite adicionado</p>
+                </div>
